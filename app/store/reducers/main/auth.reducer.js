@@ -9,7 +9,6 @@ const auth = function (state = initialState, action) {
     {
         case Actions.SET_USER:
         {
-            console.log(action.options);
             return action.options;
         }
         default:

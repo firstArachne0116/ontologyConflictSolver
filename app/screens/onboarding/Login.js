@@ -15,7 +15,10 @@ import {setUser} from '../../store/actions/main';
 export default Login = ( props ) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+  const [message, setMessage] = useState('');
   const [errorInfoModal, setErrorInfoModal] = useState(false);
+
 
   const dispatch = useDispatch();
 
@@ -29,14 +32,13 @@ export default Login = ( props ) => {
 
   const onLogin = () => {
     login(username, password).then(result => {
-      console.log(result);
       if (result.data.error) {
-        setMessage(result.msg);
+        setMessage(result.data.message);
         setErrorInfoModal(true);
       }
       else {
         dispatch(setUser({email: result.data.email, username, expertId: result.data.expertId}));
-        props.navigation.navigate('Home');
+        props.navigation.navigate('HomePage');
       }
     }).catch( err => {
       console.log(err);
@@ -82,7 +84,7 @@ export default Login = ( props ) => {
       </View>
       <PopupAlert
         popupTitle="Error"
-        message="username and/or password not recognized"
+        message={message}
         isVisible={errorInfoModal}
         handleOK={()=>{setErrorInfoModal(false)}}
       />

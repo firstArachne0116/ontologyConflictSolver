@@ -31,7 +31,5 @@ export const login = (username, password) => {
 
   let apiUrl = baseUrl + 'Login/LoginExpert.php';
   
-  return axios.get(apiUrl, {
-    params: formdata
-  });
+  return axios.post(apiUrl, formdata);
 };

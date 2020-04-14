@@ -13,7 +13,8 @@ import { createStackNavigator } from 'react-navigation-stack';
 import Splash from './screens/onboarding/Splash';
 import Login from './screens/onboarding/Login';
 import RegisterUser from './screens/onboarding/RegisterUser';
-import Home from './screens/home/Home';
+import HomePage from './screens/home';
+import Decision from './screens/home/Decision';
 
 
 const Root = createStackNavigator({
@@ -26,9 +27,12 @@ const Root = createStackNavigator({
   RegisterUser: {
     screen: RegisterUser
   },
-  Home: {
-    screen: Home
+  HomePage: {
+    screen: HomePage
   },
+  Decision: {
+    screen: Decision
+  }
 }, 
 {
   initialRouteName: 'Splash',

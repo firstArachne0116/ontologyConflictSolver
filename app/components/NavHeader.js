@@ -1,7 +1,11 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 
+// import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
+
 export default class NavHeader extends React.Component {
+  _menu = null;
+  
   constructor(props) {
     super(props);
     this.handleBack = this.handleBack.bind(this);
@@ -10,6 +14,18 @@ export default class NavHeader extends React.Component {
   handleBack() {
     this.props.navigation.goBack();
   }
+
+  setMenuRef = ref => {
+    this._menu = ref;
+  };
+  
+  hideMenu = () => {
+    this._menu.hide();
+  };
+
+  showMenu = () => {
+    this._menu.show();
+  };
 
   render() {
     var onBackFunc = this.props.onBackFunc ? this.props.onBackFunc : this.handleBack;
@@ -50,4 +66,14 @@ const styles = StyleSheet.create({
     color: '#003458',
     fontWeight: 'bold'
   },
+  gearBtn: {
+    position: 'absolute',
+    right: 5,
+    top: 7
+  },
+  menu: {
+    position: 'absolute',
+    right: 5,
+    top: 7,
+  }
 })

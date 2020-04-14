@@ -42,6 +42,7 @@ const styles = {
     alignItems: 'center',
     height: '100%',
     paddingVertical: 30,
+    backgroundColor: 'white',
   },
   text: {
     marginTop: 30,

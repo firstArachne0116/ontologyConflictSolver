@@ -1,38 +1,58 @@
-import React, { useState } from 'react';
-
-import { View, Text } from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, ScrollView, Image} from 'react-native';
 
 import { useDispatch, useSelector } from 'react-redux';
+import api from '../../api/tasks';
 
 export default Home = (props) => {
     const auth = useSelector(state => state.main.auth);
-    
+    const [unsolvedCount, setUnsolvedCount] = useState(0);
+    const getUnsolvedCount = () => {
+        api.getCount(auth.expertId).then(result=>{
+            setUnsolvedCount(result.data.count)
+        })
+    }
+    getUnsolvedCount();
     return (
-        <View>
-            <Text>
-                Welcome
-            </Text>
-        </View>
+        <ScrollView style={{backgroundColor:'#ffffff'}}>
+            <View style={styles.container}>
+                <Text style={styles.welcomeText}>
+                    Welcome {auth.username}!
+                </Text>
+                <Image
+                  source={require('../../assets/images/logo.png')}
+                />
+                <Text style={styles.text}>
+                    You have {unsolvedCount} unsolved tasks.
+                </Text>
+                <Text style={styles.text}>
+                    To see them, please click Tasks button above.
+                </Text>
+            </View>
+        </ScrollView>
     )
 }
 
-const styles = {
+const styles={
     container: {
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-between',
-        alignContent: 'space-between',
         alignItems: 'center',
         height: '100%',
         width: '100%',
-        paddingVertical: 30,
+        backgroundColor: '#fff',
+        padding: 20,
+    },
+    welcomeText: {
+        fontSize: 24,
+        color: '#003458',
+        fontStyle: 'italic',
     },
     text: {
-        marginTop: 30,
-        marginBottom: 15,
-        color: "#003458",
-        fontSize: 30,
-        textAlign: 'center',
-    },
-};
-  
+        fontSize: 24,
+        color: '#003458',
+        fontStyle: 'italic',
+        textAlign: 'justify',
+        width: '100%'
+    }
+}
