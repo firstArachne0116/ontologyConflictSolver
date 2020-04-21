@@ -13,8 +13,9 @@ import { createStackNavigator } from 'react-navigation-stack';
 import Splash from './screens/onboarding/Splash';
 import Login from './screens/onboarding/Login';
 import RegisterUser from './screens/onboarding/RegisterUser';
-import HomePage from './screens/home';
-import Decision from './screens/home/Decision';
+import HomeLayout from './screens/home/HomeLayout';
+import Category from './screens/Decision/Category';
+import Approve from './screens/Decision/Approve';
 
 
 const Root = createStackNavigator({
@@ -27,11 +28,14 @@ const Root = createStackNavigator({
   RegisterUser: {
     screen: RegisterUser
   },
-  HomePage: {
-    screen: HomePage
+  HomeLayout: {
+    screen: HomeLayout
   },
-  Decision: {
-    screen: Decision
+  Category: {
+    screen: Category
+  },
+  Approve: {
+    screen: Approve
   }
 }, 
 {

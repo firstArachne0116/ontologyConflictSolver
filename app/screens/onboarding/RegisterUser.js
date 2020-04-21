@@ -47,13 +47,14 @@ export default RegisterUser = ( props ) => {
 
   const onResigerUser = () => {
     registerUser(email, username, firstname, lastname, password).then(result => {
+      console.log(result.data);
       if (result.data.error) {
         setMessage(result.data.message);
         setErrorInfoModal(true);
       }
       else {
           dispatch(setUser({email, username, expertId: result.data.expertId}));
-          props.navigation.navigate('HomePage');
+          props.navigation.navigate('HomeLayout');
       }
     }).catch( err => {
       console.log(err);

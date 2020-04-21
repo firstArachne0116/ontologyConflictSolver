@@ -32,13 +32,14 @@ export default Login = ( props ) => {
 
   const onLogin = () => {
     login(username, password).then(result => {
+      console.log(result.data);
       if (result.data.error) {
         setMessage(result.data.message);
         setErrorInfoModal(true);
       }
       else {
         dispatch(setUser({email: result.data.email, username, expertId: result.data.expertId}));
-        props.navigation.navigate('HomePage');
+        props.navigation.navigate('HomeLayout');
       }
     }).catch( err => {
       console.log(err);

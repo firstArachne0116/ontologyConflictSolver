@@ -9,8 +9,9 @@ import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
 import api from '../../api/tasks';
 import { set_options } from '../../store/actions'
+import { set_tasks } from '../../store/actions'
 
-export default Decision = (props) => {
+export default Category = (props) => {
     const [task, setTask] = useState(props.navigation.getParam('task',{}));
     const auth = useSelector(state => state.main.auth);
     const options = useSelector(state => state.main.data.options);
@@ -38,19 +39,23 @@ export default Decision = (props) => {
     })
 
     const submitDecesion = () => {
+        console.log('1234');
         if (optionIndex != null){
-            api.submitDecesion(auth.expertId, task.conflictId, optionIndex==-1 ? 'None of above' : options[optionIndex].option_,comment).then(result => {
-                console.log(result);
+            console.log('zxcv');
+            api.submitDecesion(auth.expertId, task.termId, optionIndex==-1 ? 'None of above' : options[optionIndex].option_,comment).then(result => {
+                console.log('decision', result);
                 if (result.data.error){
 
                 }
-                else {
-                    props.navigation.goBack();
+                else if (result.data.error == false){
+                    api.getTasks(auth.expertId).then(result=>{
+                        dispatch(set_tasks(result.data.task_data));
+                        props.navigation.goBack();
+                    });
                 }
             });
         }
     }
-
 
     return (
         <ScrollView contentContainerStyle={{backgroundColor: "#fff", flexDirection: 'column', justifyContent: 'space-between'}}>

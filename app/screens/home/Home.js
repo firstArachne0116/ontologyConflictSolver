@@ -2,17 +2,9 @@ import React, {useState} from 'react';
 import {View, Text, ScrollView, Image} from 'react-native';
 
 import { useDispatch, useSelector } from 'react-redux';
-import api from '../../api/tasks';
 
 export default Home = (props) => {
     const auth = useSelector(state => state.main.auth);
-    const [unsolvedCount, setUnsolvedCount] = useState(0);
-    const getUnsolvedCount = () => {
-        api.getCount(auth.expertId).then(result=>{
-            setUnsolvedCount(result.data.count)
-        })
-    }
-    getUnsolvedCount();
     return (
         <ScrollView style={{backgroundColor:'#ffffff'}}>
             <View style={styles.container}>
@@ -23,7 +15,7 @@ export default Home = (props) => {
                   source={require('../../assets/images/logo.png')}
                 />
                 <Text style={styles.text}>
-                    You have {unsolvedCount} unsolved tasks.
+                    You have {props.unsolvedCount} unsolved tasks.
                 </Text>
                 <Text style={styles.text}>
                     To see them, please click Tasks button above.

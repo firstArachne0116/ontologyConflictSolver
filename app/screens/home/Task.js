@@ -5,30 +5,26 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
-import api from '../../api/tasks';
-import { set_tasks } from '../../store/actions'
-
 export default Tasks = (props) => {
     const auth = useSelector(state => state.main.auth);
     const tasks = useSelector(state => state.main.data.tasks);
     
     const [isUnCategory, setIsUnCategory] = useState(true);
-    const dispatch = useDispatch();
+    const [approveDefinition, setApproveDefinition] = useState(false);
 
-    const getTasks = () => {
-        api.getTasks(auth.expertId).then(result=>{
-            console.log(result);
-            dispatch(set_tasks(result.data.task_data));
-        });
-    }
 
-    const onTask = (index) => {
-        console.log(tasks[index]);
-        if (!tasks[index].isSolved){
-            props.navigation.navigate('Decision', {task: tasks[index]});
+    const onTask = (termId) => {
+        const task = tasks.find(t => t.termId == termId)
+        const url = {
+            category: 'Category',
+            synonym: 'Approve',
+            addTerm: 'AddTerm'
+        }
+        console.log(task);
+        if (!task.isSolved){
+            props.navigation.navigate(url[task.type], {task});
         }
     }
-    getTasks();
     return (
         <ScrollView style={{backgroundColor:'#ffffff'}}>
             <View style={styles.container}>
@@ -48,8 +44,8 @@ export default Tasks = (props) => {
                     isUnCategory && (
                         <View style={{flexDirection: 'row',flexWrap: 'wrap',}}>
                         {
-                            tasks.map((item, index)=>(
-                                <TouchableOpacity key={'task_' + index} style={{width: '50%', alignContent: 'center', alignItems: 'center'}} onPress={()=>onTask(index)}>
+                            tasks.filter(task => task.type == 'category').map((item, index)=>(
+                                <TouchableOpacity key={'task_' + index} style={{width: '50%', alignContent: 'center', alignItems: 'center'}} onPress={()=>onTask(item.termId)}>
                                     <Text style={{color: item.isSolved?'green':'red'}}>
                                         {item.term}({item.count})
                                     </Text>
@@ -63,14 +59,29 @@ export default Tasks = (props) => {
                     <Text style={{fontSize: 18}}>
                         Approve Definitions
                     </Text>
-                    <TouchableOpacity onPress={()=>{}}>
+                    <TouchableOpacity onPress={()=>{setApproveDefinition(!approveDefinition)}}>
                         {
-                            false?
+                            approveDefinition?
                             <AntDesignIcon name="caretup" size={25}/>
                             :<AntDesignIcon name="caretdown" size={25}/>
                         }
                     </TouchableOpacity>
                 </View>
+                {
+                    approveDefinition && (
+                        <View style={{flexDirection: 'row',flexWrap: 'wrap',}}>
+                        {
+                            tasks.filter(task => task.type == 'synonym').map((item, index)=>(
+                                <TouchableOpacity key={'task_' + index} style={{width: '50%', alignContent: 'center', alignItems: 'center'}} onPress={()=>onTask(item.termId)}>
+                                    <Text style={{color: item.isSolved?'green':'red'}}>
+                                        {item.term}({item.count})
+                                    </Text>
+                                </TouchableOpacity>
+                            ))
+                        }
+                        </View>
+                    )
+                }
                 <View style={styles.header}>
                     <Text style={{fontSize: 18}}>
                         Add a term
