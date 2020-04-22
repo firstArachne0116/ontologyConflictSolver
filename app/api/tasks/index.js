@@ -71,5 +71,21 @@ export default api = {
     let apiUrl = baseUrl + 'DailyOperations/AddDefinition.php';
 
     return await axios.get(apiUrl, {params: data});
+  },
+  
+  getAddTermOptions : async (termId, expertId) => {
+    const data = {termId, expertId};
+
+    let apiUrl = baseUrl + 'DailyOperations/GetAddTermOptions.php';
+
+    return await axios.get(apiUrl, {params: data});
+  },
+
+  solveAddTermConflict : async (termId, expertId, termType, subpart, superpart, synonyms) => {
+    const data = { termId, expertId, termType, subpart, superpart, synonyms };
+    
+    let apiUrl = baseUrl + 'DailyOperations/SolveAddTermConflict.php';
+
+    return await axios.get(apiUrl, {params: data});
   }
 }

@@ -10,6 +10,8 @@ import Task from './Task';
 
 import api from '../../api/tasks';
 import { set_tasks } from '../../store/actions'
+import { set_quality } from '../../store/actions'
+
 import { useDispatch, useSelector } from 'react-redux';
 
 export default HomeLayout = (props) => {
@@ -28,8 +30,8 @@ export default HomeLayout = (props) => {
                 console.log(result);
                 if (result.data.count != unsolvedCount) {
                     setUnsolvedCount(result.data.count);
-                    setTabID(id);
                 }
+                setTabID(id);
             })
         }
         else if (id == 1){
@@ -52,6 +54,10 @@ export default HomeLayout = (props) => {
             console.log(result.data);
             dispatch(set_tasks(result.data.task_data));
         });
+        let result={
+            data: ["maturity", "shape", "orientation", "density", "perceived quality", "dehiscence", "color brightness", "relational quality", "surface feature", "reflectance", "quantity", "development", "arrangement", "duration", "course", "relative position", "direction", "architecture", "life cycle", "color saturation", "coloration", "habitat", "variability", "size", "derivation", "fusion", "fixation", "fragility", "position", "condition", "prominence", "reproduction", "growth form", "ratio", "age"]
+        }
+        dispatch(set_quality(result.data));
     }, [])
 
     const renderContent =  () => {

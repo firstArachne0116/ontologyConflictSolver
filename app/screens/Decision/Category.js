@@ -13,11 +13,13 @@ import { set_tasks } from '../../store/actions'
 
 export default Category = (props) => {
     const [task, setTask] = useState(props.navigation.getParam('task',{}));
-    const auth = useSelector(state => state.main.auth);
-    const options = useSelector(state => state.main.data.options);
-    const dispatch = useDispatch();
     const [optionIndex, setOptionIndex] = useState(null);
     const [comment, setComment] = useState(null);
+
+    const auth = useSelector(state => state.main.auth);
+    const options = useSelector(state => state.main.data.options);
+
+    const dispatch = useDispatch();
     
     var deviceHeight = Platform.OS === "ios"
         ? Dimensions.get("window").height
@@ -32,11 +34,6 @@ export default Category = (props) => {
     useEffect(() => {
         getTerm();
     }, []);
-    useEffect(()=>{
-        deviceHeight = Platform.OS === "ios"
-            ? Dimensions.get("window").height
-            : require("react-native-extra-dimensions-android").get("REAL_WINDOW_HEIGHT");
-    })
 
     const submitDecesion = () => {
         console.log('1234');

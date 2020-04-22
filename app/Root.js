@@ -14,8 +14,9 @@ import Splash from './screens/onboarding/Splash';
 import Login from './screens/onboarding/Login';
 import RegisterUser from './screens/onboarding/RegisterUser';
 import HomeLayout from './screens/home/HomeLayout';
-import Category from './screens/Decision/Category';
-import Approve from './screens/Decision/Approve';
+import Category from './screens/decision/Category';
+import Approve from './screens/decision/Approve';
+import AddTerm from './screens/decision/AddTerm';
 
 
 const Root = createStackNavigator({
@@ -36,6 +37,9 @@ const Root = createStackNavigator({
   },
   Approve: {
     screen: Approve
+  },
+  AddTerm: {
+    screen: AddTerm
   }
 }, 
 {

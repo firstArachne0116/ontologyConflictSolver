@@ -27,6 +27,7 @@ export default Approve = (props) => {
 
     const auth = useSelector(state => state.main.auth);
     const options = useSelector(state => state.main.data.approveOptions);
+    
     const dispatch = useDispatch();
     
     var deviceHeight = Platform.OS === "ios"
@@ -39,6 +40,11 @@ export default Approve = (props) => {
             dispatch(set_approve_options(result.data));
         });
     }
+    
+    useEffect(() => {
+        getTerm();
+    }, []);
+    
     const setDefinition = (definitionId) => {
         const sentenceIds = options.sentence.filter((it, index) => selection[index]).map(it => it.id);
         // api.setDefinition(auth.expertId, sentenceIds, definitionId).then(result => {
@@ -68,14 +74,6 @@ export default Approve = (props) => {
             setNewDefinition('');
         })
     }
-    useEffect(() => {
-        getTerm();
-    }, []);
-    useEffect(()=>{
-        deviceHeight = Platform.OS === "ios"
-            ? Dimensions.get("window").height
-            : require("react-native-extra-dimensions-android").get("REAL_WINDOW_HEIGHT");
-    })
 
     const onSubmit = () => {
         setConfirmModal(true);
@@ -116,7 +114,7 @@ export default Approve = (props) => {
                     Example sentences:
                 </Text>
                 {
-                    options &&
+                    options && options.sentence &&
                     options.sentence.map((item, index) => (
                         <View key={'sentence'+index} style={{flexDirection: 'row', alignItems: 'center'}}>
                             {selection[index] ?
@@ -142,7 +140,7 @@ export default Approve = (props) => {
                     Proposed definitions:
                 </Text>
                 {
-                    options &&
+                    options && options.definition &&
                     options.definition.map((item, index) => {
                         // const checkColor = selection.find( (sel, index) => sel && !options.approveData.find(it => it.sentenceId == options.sentence[index].id)) ? 'lightpink' : 'lightblue';
                         // const color = options.approveData.find( it => (it.definitionId == item.id && selection[options.sentence.findIndex(sen => sen.id == it.sentenceId)])) ? checkColor :'white';
@@ -214,12 +212,6 @@ const styles = {
     sentence: {
         textAlign: 'left',
         fontSize: 14,
-    },
-    option: {
-        flexDirection:'row',
-        justifyContent: 'flex-start',
-        alignContent: 'flex-start',
-        alignItems: 'flex-start'
     },
     inputContainer: {
         borderRadius: 9999,

@@ -11,6 +11,7 @@ export default Tasks = (props) => {
     
     const [isUnCategory, setIsUnCategory] = useState(true);
     const [approveDefinition, setApproveDefinition] = useState(false);
+    const [addTermDefinition, setAddTermDefinition] = useState(false);
 
 
     const onTask = (termId) => {
@@ -86,14 +87,29 @@ export default Tasks = (props) => {
                     <Text style={{fontSize: 18}}>
                         Add a term
                     </Text>
-                    <TouchableOpacity onPress={()=>{}}>
+                    <TouchableOpacity onPress={()=>{setAddTermDefinition(!addTermDefinition)}}>
                         {
-                            false?
+                            addTermDefinition?
                             <AntDesignIcon name="caretup" size={25}/>
                             :<AntDesignIcon name="caretdown" size={25}/>
                         }
                     </TouchableOpacity>
                 </View>
+                {
+                    addTermDefinition && (
+                        <View style={{flexDirection: 'row',flexWrap: 'wrap',}}>
+                        {
+                            tasks.filter(task => task.type == 'addTerm').map((item, index)=>(
+                                <TouchableOpacity key={'task_' + index} style={{width: '50%', alignContent: 'center', alignItems: 'center'}} onPress={()=>onTask(item.termId)}>
+                                    <Text style={{color: item.isSolved?'green':'red'}}>
+                                        {item.term}({item.count})
+                                    </Text>
+                                </TouchableOpacity>
+                            ))
+                        }
+                        </View>
+                    )
+                }
                 <View style={styles.header}>
                     <Text style={{fontSize: 18}}>
                         Miscellaneous
