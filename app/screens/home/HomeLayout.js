@@ -11,9 +11,22 @@ import Task from './Task';
 import api from '../../api/tasks';
 import { set_tasks } from '../../store/actions'
 import { set_quality } from '../../store/actions'
+import { set_structure } from '../../store/actions'
 
 import { useDispatch, useSelector } from 'react-redux';
 
+const getStructure = (data, structures, index) => {
+    structures.push({
+        id: index,
+        name: data.text
+    });
+    if (data.children){
+        data.children.map(child => {
+            index = getStructure(child, structures, ++index);
+        })
+    }
+    return index;
+}
 export default HomeLayout = (props) => {
     const [tabID, setTabID] = useState(0);
     const auth = useSelector(state => state.main.auth);
@@ -54,10 +67,15 @@ export default HomeLayout = (props) => {
             console.log(result.data);
             dispatch(set_tasks(result.data.task_data));
         });
-        let result={
-            data: ["maturity", "shape", "orientation", "density", "perceived quality", "dehiscence", "color brightness", "relational quality", "surface feature", "reflectance", "quantity", "development", "arrangement", "duration", "course", "relative position", "direction", "architecture", "life cycle", "color saturation", "coloration", "habitat", "variability", "size", "derivation", "fusion", "fixation", "fragility", "position", "condition", "prominence", "reproduction", "growth form", "ratio", "age"]
-        }
-        dispatch(set_quality(result.data));
+        api.getStructure().then(result => {
+            let structures = [];
+            getStructure(result.data, structures, 1);
+            console.log(structures);
+            dispatch(set_structure(structures));
+        });
+        api.getQuality().then(result => {
+            dispatch(set_quality(result.data.children.map(it => it.text)));
+        })
     }, [])
 
     const renderContent =  () => {

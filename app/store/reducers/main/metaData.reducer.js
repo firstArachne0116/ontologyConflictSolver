@@ -43,7 +43,8 @@ export default (state = initialState, action) => {
     case Actions.SET_QUALITY:
       return {...state, quality: action.payload };
     case Actions.SET_STRUCTURE:
-      return {...state, quality: action.payload };
+      console.log(action.payload);
+      return {...state, structure: action.payload };
     default:
       return state;
   }

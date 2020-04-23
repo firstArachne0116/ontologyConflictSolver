@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import NavHeader from '../../components/NavHeader';
 import PrimaryButton from '../../components/PrimaryButton';
 import PopupConfirm from '../../components/PopupConfirm';
-import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import SearchableDropdown from 'react-native-searchable-dropdown';
 
@@ -20,8 +19,8 @@ import { set_tasks } from '../../store/actions'
 export default Category = (props) => {
     const [task, setTask] = useState(props.navigation.getParam('task',{}));
     const [confirmModal, setConfirmModal] = useState(false);
-    const [termType, setTermType] = useState('Structure');
-    const [group, setGroup] = useState('');
+    const [termType, setTermType] = useState('Character');
+    const [group, setGroup] = useState('age');
     const [structureTreeVisible, setStructureTreeVisible] = useState(false);
     const [subPart, setSubPart] = useState('None');
     const [superPart, setSuperPart] = useState('None');
@@ -101,44 +100,48 @@ export default Category = (props) => {
                     <Text style={{marginLeft: 15}}>
                         {task.data}
                     </Text>
-                    <Text style={{...styles.sentence, color: '#003458'}}>
+                    <Text style={{...styles.sentence, color: 'black', fontSize: 17, borderTopWidth: 1, borderTopColor: 'lightgrey', marginTop: 15, paddingTop: 15}}>
                         Use example senctences and the definition to help answer questions below:
                     </Text>
                     <View style={{padding: 10}}>
-                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                            <Text>
+                        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+                            <Text style={{color: '#003458'}}>
                                 Is {task.term} a structure or a character?
                             </Text>
-                            <Picker
-                                style={{height: 30, width: '100%'}}
-                                selectedValue={termType}
-                                onValueChange={(itemValue, itemIndex) => {
-                                    setTermType(itemValue);
-                                }}>
-                                <Picker.Item label="Structure" value="Structure" />
-                                <Picker.Item label="Character" value="Character" />
-                            </Picker>
+                            <View style={{borderWidth: 1}}>
+                                <Picker
+                                    style={{height: 30, width: 140}}
+                                    selectedValue={termType}
+                                    onValueChange={(itemValue, itemIndex) => {
+                                        setTermType(itemValue);
+                                    }}>
+                                    <Picker.Item label="Structure" value="Structure" />
+                                    <Picker.Item label="Character" value="Character" />
+                                </Picker>
+                            </View>
                         </View>
                         {
                             termType == 'Character' &&
                             <View>
-                                <Text>Select a group that {task.term} belong:</Text>
-                                <Picker
-                                    style={{height: 30}}
-                                    selectedValue={group}
-                                    onValueChange={(itemValue, itemIndex) => {
-                                        setGroup(itemValue);
-                                    }}>
-                                    {
-                                        quailtyData.sort().map(it => <Picker.Item key={it} label={it} value={it} />)
-                                    }
-                                </Picker>
+                                <Text style={{color: '#003458'}}>Select a group that {task.term} belong:</Text>
+                                <View style={{borderWidth: 1}}>
+                                    <Picker
+                                        style={{height: 30}}
+                                        selectedValue={group}
+                                        onValueChange={(itemValue, itemIndex) => {
+                                            setGroup(itemValue);
+                                        }}>
+                                        {
+                                            quailtyData.sort().map(it => <Picker.Item key={it} label={it} value={it} />)
+                                        }
+                                    </Picker>
+                                </View>
                             </View>
                         }
                         {
                             termType == 'Structure' &&
                             <View>
-                                <Text>
+                                <Text style={{color: '#003458'}}>
                                     Select structures that are part of {task.term} in all circumstances.
                                 </Text>
                                 <View style={{flexDirection:'row', alignItems: 'center'}}>
@@ -151,7 +154,7 @@ export default Category = (props) => {
                                         is part of {task.term.toUpperCase()}
                                     </Text>
                                 </View>
-                                <Text>
+                                <Text style={{color: '#003458'}}>
                                     Select structures that are part of {task.term} in all circumstances.
                                 </Text>
                                 <View style={{flexDirection:'row', alignItems: 'center'}}>
@@ -166,15 +169,15 @@ export default Category = (props) => {
                                 </View>
                             </View>
                         }
-                        <Text>List {task.term}'s synonyms:</Text>
-                        <View style={{marginHorizontal: 10, borderWidth: 1, minHeight: 50}}>
+                        <Text style={{color: '#003458', marginTop: 5}}>List {task.term}'s synonyms:</Text>
+                        <View style={{marginHorizontal: 10, borderWidth: 1, minHeight: 50, paddingHorizontal: 1}}>
                             {synonyms.map((sy, index) => (
-                                <View key={"synonym" + index} style={{...styles.synonym, backgroundColor: index % 2 ? 'powderblue' : 'lightblue'}}>
+                                <View key={"synonym" + index} style={{...styles.synonym, backgroundColor: index % 2 ? 'lightcyan' : 'rgb(200,224,240)'}}>
                                     <Text>{sy}</Text>
                                     <TouchableOpacity style={{...styles.button, width: 26, height: 26, backgroundColor: 'red'}} onPress={() => {
                                         setSynonyms(synonyms.filter(it => it!=sy));
                                     }}>
-                                        <FontAwesomeIcon name="trash-o" size={16} color={"white"}/>
+                                        <FontAwesomeIcon name="remove" size={16} color={"white"}/>
                                     </TouchableOpacity>
                                 </View>
                             ))}
@@ -185,7 +188,7 @@ export default Category = (props) => {
                                 setSynonyms([...synonyms, synonym]);
                                 setSynonym('');
                             }}>
-                                <IoniconsIcon name="md-add" size={27} color={"white"}/>
+                                <FontAwesomeIcon name="plus" size={25} color={"white"}/>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -320,6 +323,6 @@ const styles = {
         height: 30,
         width: '100%',
         padding: 5,
-        marginHorizontal: 1,
+        marginRight: 5,
     }
 }
